@@ -1,0 +1,12 @@
+Check your /etc/apt/apt.conf
+
+Network -Network Proxy GUI will update /etc/apt/apt.conf and set the proxy info there.
+Find out the proxy server info from pac
+
+You can find the details by reading the proxy.pac file anyway.
+
+So the /etc/apt/apt.conf should look like below (suppose the proxy server is => proxy.company.com port 80), do NOT use pac URL.
+
+Acquire::http::proxy "http://proxy.company.com:80/";
+Acquire::https::proxy "https://proxy.company.com:80/";
+Acquire::ftp::proxy "ftp://proxy.company.com:80/";
