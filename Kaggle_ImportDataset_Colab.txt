@@ -5,6 +5,7 @@ drive.mount('/content/drive')
 import os
 os.environ['KAGGLE_CONFIG_DIR'] = "/content/drive/My Drive/"
 
+upload kaggle.json file downloaded from Kaggle-account-apitoken to mydrive
 accept rules in the competition first
 
 !kaggle competitions download -c freesound-audio-tagging
