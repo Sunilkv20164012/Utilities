@@ -22,3 +22,7 @@ with open("/content/drive/My Drive/ooootestdownload.wav", "wb") as file:
     for block in r.iter_content(chunk_size = 1024): 
          if block:  
              file.write(block)  
+             
+             
+!pwd
+!unzip "/content/drive/My Drive/datak.zip"
