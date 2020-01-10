@@ -9,5 +9,16 @@ upload kaggle.json file downloaded from Kaggle-account-apitoken to mydrive
 accept rules in the competition first
 
 !kaggle competitions download -c freesound-audio-tagging
+if this doesn't work
+try below approach
 
-
+!touch ooootestdownload.wav
+import requests  
+file_url = "download-link----filename%3D00063640.wav"
+    
+r = requests.get(file_url, stream = True)  
+  
+with open("/content/drive/My Drive/ooootestdownload.wav", "wb") as file:  
+    for block in r.iter_content(chunk_size = 1024): 
+         if block:  
+             file.write(block)  
