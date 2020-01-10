@@ -1,0 +1,12 @@
+
+from google.colab import drive
+drive.mount('/content/drive')
+
+import os
+os.environ['KAGGLE_CONFIG_DIR'] = "/content/drive/My Drive/"
+
+accept rules in the competition first
+
+!kaggle competitions download -c freesound-audio-tagging
+
+
