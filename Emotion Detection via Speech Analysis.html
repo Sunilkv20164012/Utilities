@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://www.vikrantfernandes.com/web/html/medusa.html -->
+<html data-xlabs-extension="1" data-xlabs-extension-ready="1" data-xlabs-extension-version="2.6.1"><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+		<title>Emotion Detection via Speech Analysis</title>
+		
+		<link rel="icon" type="image/ico" href="http://www.vikrantfernandes.com/web/img/favicon.ico">
+		
+		<meta name="google-site-verification" content="acCkhMZqHlAwKL_oAiQfxb_Qs7DLDIYTr212cOSqJEA">
+		<link rel="canonical" href="http://vikrantfernandes.com/">
+
+		<meta name="keywords" content="vikrant fernandes,vikrant,fernandes,vikrantfernandes,developer,emotion detection,emotion detection using speech,speech emotion detection, SER, speech recognition, mfcc,mel frequency cepstral coefficient,svm,support vector machine">
+		<meta name="description" content="Vikrant Fernandes: Developer, Hacker, Coder, Traveler, Entrepreneur, Engineer, Tinkernut, Explorer">
+
+		<meta property="og:title" content="">
+	    <meta property="og:site_name" content="Vikrant Fernandes">
+	    <meta property="og:url" content="http://vikrantfernandes.com/">
+	    <meta property="og:description" content="Vikrant Fernandes: Developer, Hacker, Coder, Traveler, Entrepreneur, Engineer, Tinkernut, Explorer">
+	    <meta property="og:image" content="http://vikrantfernandes.com/web/img/me.jpg">
+	    <meta property="og:type" content="website">
+	    <meta property="og:locale" content="en_US">
+	    <!--TWITTER-->
+	    <meta property="twitter:card" content="summary">
+	    <meta property="twitter:title" content="">
+	    <meta property="twitter:description" content="Vikrant Fernandes: Developer, Hacker, Coder, Traveler, Entrepreneur, Engineer, Tinkernut, Explorer">
+	    <meta property="twitter:creator" content="@thezorbastian">
+	    <meta property="twitter:url" content="http://vikrantfernandes.com/">
+	    <meta property="twitter:image" content="http://vikrantfernandes.com/web/img/me.jpg">
+
+		<link rel="stylesheet" type="text/css" href="./Emotion Detection via Speech Analysis_files/prj-style.css">
+		<link rel="stylesheet" type="text/css" href="./Emotion Detection via Speech Analysis_files/icons-style.css">
+		
+		<link rel="stylesheet" href="./Emotion Detection via Speech Analysis_files/font-awesome.min.css">
+		<script async="" src="./Emotion Detection via Speech Analysis_files/analytics.js.download"></script><script type="text/javascript" src="./Emotion Detection via Speech Analysis_files/jquery-1.3.2.js.download"></script>
+
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+		  ga('create', 'UA-88369234-1', 'auto');
+		  ga('send', 'pageview');
+
+		</script>
+	
+	<style type="text/css">#xLabsCanvas{pointer-events:none;top:0;left:0;position:fixed;z-index:2147483646;}#xLabsCanvas.allow-pointer{pointer-events:auto;}</style></head>
+
+	<body>
+
+		<div id="wrapper-prj">
+			<div id="content-block">
+
+				<a class="back-nav" href="http://vikrantfernandes.com/">HOME</a>
+
+				<h2>SER by MFCC extraction and SVM classification</h2>
+
+				<div id="content-text">
+					
+					<p>In the current age with speech based artificial assistants like Apple’s ‘Siri’, Microsoft’s ‘Cortana’ and Amazon’s ‘Alexa’, human computer interaction is reaching a new phase. By detecting the emotions of the speaker we can leverage the information and give customized Human Computer Interaction to users. The new age of computing and user experience is based on communicating verbally with the machine. Speech Emotion Recognition (SER) will help get a whole new aspect to personalized computing. Simply put, verbal communication involves two aspects - 'What we say' &amp; 'How we say it'. Commendable as it may be, simply detecting what we say may prove insufficient towards giving us the best results. At present, the status quo aims to build a world wherein computers provide us with help before we face the need to ask for it. Paying attention and developing patterns based on how we speak as we interact with our speech based assistants could help them be proactive and assist us better. Speech Emotion Recognition will propel us closer to the goal of personalized computing. Hence, with all this in mind, I decided to do my final year engineering project in this domain. Using MFCC features, reducing the dimensions of our data set and normalizing the data we were able to achieve improved accuracy in detecting emotions by a SVM classifier. I shall describe my work here.</p>
+					
+					<p>To begin with, a database of audio samples was required. The SER model developed was to be tested against this audio database in a supervised learning approach. For the study of Speech Emotion Recognition various databases of different languages have been developed over the years. The audio database used in this study is the <a onclick="window.open(&#39;http://emodb.bilderbar.info/start.html&#39;)" class="textLinks" style="color:#00f;cursor: pointer;">Berlin Database of Emotional Speech</a>. The database consists of 535 audio samples with emotions of anger, boredom, disgust, fear, happiness, neutral and sadness. The recordings took place in the anechoic chamber of the Technical University Berlin, Department of Technical Acoustics. Each audio sample is sampled at 16kHz (Fs). The database contains samples of males of the age group of 25, 26, 30, 31, 32 and females of the age group 21, 31, 32, 34 and 35. In this study we focused on using audio samples of the same gender and similar age group since gender and age group create different ranges of voice and hence, we used samples of female of the age group of 31, 32, 34 and 35. Of the total of 257 female samples selected, 60% i.e. 155 samples were used in training the classifier and the remaining 40% i.e. 102 samples were used to test the trained model of the classifier.</p>
+
+					<p>The next step was to extract the Mel Frequency Cepstral Coefficients. Mel Frequency Cepstral Coefficents (MFCCs) are a feature widely used in automatic speech and speaker recognition. They were introduced by Davis and Mermelstein in the 1980's. A mel is a unit of measure of perceived frequency of a tone. Through the mapping onto the mel scale, which is like the Hertz-scale for frequency to the human hearing, MFCCs enable a signal representation that is closer to human hearing perception and hence are an extremely useful feature in emotion recognition. They are calculated by applying a Mel-scale filter bank to the Fourier transform of a windowed signal and later a DCT transforms the log spectrum into a cepstral. The following steps are involved in extracting the MFCC feature vector of an audio sample:<br>
+					1. Framming the audio sample<br>
+					2. Windowing<br>
+					3. Fast Fourier Transform (FFT) computation<br>
+					4. Power Spectral Distribution<br>
+					5. Mel-spaced filterbank generation<br>
+					6. Logarithmic of the filterbank energy<br>
+					7. Discrete cosine transform (DCT) of the logarithmic filterbank<br>
+					8. Sinusoidal Liftering<br>
+
+					You finally get mel-spaced filterbank energies of the audio sample. I shall describe each step.						
+					</p>
+
+					<br>
+
+					<p><b>Framming</b>: An audio signal is constantly changing over time. However, on short time scales the audio signal doesn’t change much. The signal is statistically stationary. Hence to simplify, we frame our audio signal into frames of 16-40ms. In this study, I picked a frame size of 25ms and a frame step of 10ms long. With sampling frequency ‘Fs’, each frame consisted of frame size (in seconds) times ‘Fs’ which resulted to 0.025s * 16000Hz = 400 samples. With frame step of 0.010s, a new frame was created at every 160 samples. The overlapping of frames maintained continuity in the signal.</p>
+
+					<p><b>Windowing</b>: In order to compute the Fourier transform of the signal, we require the audio signal to be periodic and continuous when wrapping around. This is handled by windowing the framed signal. By multiplying each frame by a hamming window, we increase the continuity at the initial and final points of the signal. We windowed the framed signal using the Hamming window described in the following equation:</p>
+
+					<p style="text-align: center;">W(n) = (1-a) - a*cos[2*pi*n/(N-1)]<br> 0 &#8804; n &#8804; (N-1)</p>
+
+					<p>with the value of ‘a’ is taken as 0.46. The original framed signal is multiplied with the hamming window as shown here</p>
+
+					<p style="text-align: center;">s(n) * W(n)</p>
+					<p>With the use of a Hamming window, the harmonics in the frequency response are much sharper.</p>
+
+					<p><b>FFT computation</b>: We represent the framed and windowed time-domain signal as ‘Si(n)’ where ‘i’ stands for frame number and ‘n’ stands for the sample number. In order to compute the power distribution over the different frequencies of the audio signal, the signal had to be transformed from its original domain i.e. time domain to the frequency domain. Hence, we compute the discrete Fourier transform of the signal. More specifically we compute the DFT of the signal using 512 point Fast Fourier Transform (FFT) since DFT has a complexity of O(n^2) while FFT has a complexity of just O[n*log(n)] proving to be faster. The Fourier transform was computed across all the frames of Si(n). The resultant signal is represented as</p>
+					<p style="text-align: center;"> Si(K)<br>1 &lt; k &lt; K</p> 
+					<p>where K is the length of the Fourier transform as shown in Figure 1 below. Of the 512 point FFT, the first 257 points were kept while the rest were discarded.</p>
+
+					<br>
+					<div class="image-block">
+						<img src="./Emotion Detection via Speech Analysis_files/medusa1.png" style="width: 30%; height: 10%;">
+					</div>
+					<p style="text-align: center;"><b>Fig. 1.</b> FFT magnitude frequency response</p>
+					<br>
+
+					<p><b>Power Spectral Distribution</b>: The power distribution of the audio signal across the frequency spectrum is computed as:</p>
+					<p style="text-align: center;">Pi(k)= (1/N) * ([|Si(k)|]^2)<br>1 &#8804; k &#8804; 257<br>and ‘N’ is the number of samples</p>
+					
+					<p><b>Mel-spaced Filter Bank Generation</b>: The Mel filterbank is a set of 20 to 40 filterbanks. We used 26 filterbanks in this study with a frequency range ‘R’ of 300Hz to 8000Hz. The spacing between the points is calculated using:</p>
+					<p style="text-align: center;">(Rupper-Rlower)/(b-1)<br>where 'b' is the number of required filterbanks</p>
+					<p>We convert to mel scale 'Rmel' using:</p>
+					<p style="text-align: center;">Mel(f) = 1125*log(1 + f/700)<br>where 'f' is the frequency spacing from the previous equation</p>
+					<p>26 equally mel spaced frequencies were selected between 'Rmel'. Using the following equation, the 26 frequencies were converted back from the mel scale to Hz</p>
+					<p style="text-align: center;">M^-1(m) = 700 * [e^(m/1125) - 1]</p>
+					<p>Our 26 mel spaced triangular band pass filter is computed across these bins and is represented by Hm(k) where ‘m’ stands for the filter number. The filter bank energy of the audio signal was computed as per equation:</p>
+					<p style="text-align: center;">FBE = Hm(k) * Pi(k)</p>
+					<p>Fig 2. below depicts the Filter bank energy of the power spectrum of a single audio sample</p>
+
+					<br>
+					<div class="image-block">
+						<img src="./Emotion Detection via Speech Analysis_files/medusa2.png" style="width: 30%; height: 10%;">
+					</div>
+					<p style="text-align: center;"><b>Fig. 2.</b> All 26 filterbank energies of the Power Spectrum</p>
+					<br>
+
+					<p><b>Logarithm of filter bank energy</b>: The mel filter banks model the non-linear characteristics of the human ear. Humans do not hear audio loudness on a linear scale. For example, to double the perceived loudness of a sound we need to put eight times as much energy into it. Large variations in energy may not sound different if the sound is loud to begin with. Hence by taking the logarithm of the filter bank energy we can cater to the non-linear characteristics of loudness. Also by taking the log of the filter bank energies, the multiplication relationship of the two transfer functions get converted to addition relationship which is especially useful when the transfer function gets multiplied with noise ripples added as a result of the microphone or channel. Hence, we take the logarithmic of the filter bank energy as shown in:</p>
+
+					<p style="text-align: center;">E(k) = log(FBE)</p>
+
+					<p>As shown in the Fig. 3 below, the function of the log operation is to compress the data and have our features match much closely to what humans actually hear.</p>
+
+					<br>
+					<div class="image-block">
+						<img src="./Emotion Detection via Speech Analysis_files/medusa3.png" style="width: 30%; height: 10%;">
+					</div>
+					<p style="text-align: center;"><b>Fig. 3.</b> Log of the 26 filterbank energies</p>
+					<br>
+
+					<p><b>Discrete Cosine Transform of Logarithmic Filter Banks</b>: Since we performed FFT on our audio signal we need to bring it back to the time domain. Discrete Cosine Transform (DCT) converts the frequency domain signal into a time-like domain called que-frequency domain. Performing DCT on our signal also allows us to de-correlate the correlated and overlapping filter bank energies. A general DCT equation is described as:</p>
+
+					<p style="text-align: center;">DCT = &#8730;(2/b) * cos[(pi*p*(2q+1))/2b]<br>1 &#8804; p,q &#8804; b-1</p>
+					<p>Using the above equation we compute the decorrelated energies of the filter banks as shown below:</p>
+					<p style="text-align: center;">MFCCi = DCT * E(k)</p>
+					<p>The resultant 'MFCCi' is a matrix in the cepstral domain.</p>
+
+					<p><b>Sinusoidal Liftering</b>: In order to increase the classification results, liftering is performed on the 'MFCCi' signal. Liftering is generally defined as a windowing operation in the cepstral domain. It smoothens the magnitude spectrum of the signal. A sinusoidal liftered signal is given by:</p>
+					<p style="text-align: center;">CC = LIFi * MFCCi</p>
+					<p>where 'LIFi' is the liftering parameter and is defined as:</p>
+					<p style="text-align: center;">LIFi = 1 + [D/2 * sin(pi*i/D)]<br>where 'D' is the liftering parameter</p>
+
+					<p><b>Coefficient Selection</b>: The 26 DCT filterbank energies are shown in Fig 3. Of the Cepstral Coefficients computed, we require just the first 12 coefficients. Lower order MFCC coefficients represent smooth or slow changes in the DCT filter bank energies as represented in Fig. 4, as opposed to the higher order coefficients which represent fast changes shown in Fig. 5. These fast changes degrade SER and hence are discarded</p>
+
+					<br>
+					<div class="image-block">
+						<img src="./Emotion Detection via Speech Analysis_files/medusa5.png" style="width: 30%; height: 10%;">
+					</div>
+					<p style="text-align: center;"><b>Fig. 4.</b> 25 Mel spaced filterbank energies</p>
+					<br>
+					<div class="image-block">
+						<img src="./Emotion Detection via Speech Analysis_files/medusa4.png" style="width: 30%; height: 10%;">
+					</div>
+					<p style="text-align: center;"><b>Fig. 5.</b> Lower order Mel-spaced filter bank energies. Notice the slow change</p>
+					<br>
+					<div class="image-block">
+						<img src="./Emotion Detection via Speech Analysis_files/medusa6.png" style="width: 30%; height: 10%;margin-right: 10px;">
+					</div>
+					<p style="text-align: center;"><b>Fig. 6.</b> Higher order Mel-spaced filter bank energies. Notice the fast change</p>
+					<br>
+
+					<p><b>Dimensionality Reduction</b>: The acquired ‘CC’ matrix after liftering contains dimensions that cannot be interpreted easily by a classifier. For each audio sample a 12xF matrix is generated, where ‘F’ is the number of frames. Supervised learning requires more than one sample to learn and construct a model. Hence, we looped through all the samples which left us with a 12xFxS matrix, where ‘S’ is the number of audio samples. In order to reduce these dimensions, for each sample, Mean, Median, Standard Deviation, Kurtosis and Skewness is extracted across each mel coefficients. As a result, each sample is now a 1x60 matrix with 12 mean, 12 median, 12 standard deviation, 12 kurtosis and 12 skewness values of the 12xF matrix. The remaining samples were looped through this procedure and added to the final matrix ‘CC’ giving a Sx60 matrix where ‘S’ is the number of samples</p>
+					<p><b>Normalization</b>: Normalization of the extracted feature vector is important prior to feature classification. Also called as ‘scaling’, it is mainly performed to avoid attributes in greater numeric ranges from dominating those in the smaller numeric ranges. Normalization can be carried out in two variants, row normalization and column normalization. A normalized matrix was computed using the following:</p>
+					<p style="text-align: center;">NCCij = [CCij - min(Xz)]/[max(Xz) - min(Xz)]</p>
+					<p style="text-align: center;">where X is either row or column and z is the corresponding index</p>
+					<p>This normalizes the data set between 0 and 1. Fig. 7 and 8 depict pre-normalization and post-normalization of audio clips. Notice the high values in the Figure 7. They tend to overshadow the smaller numeric ranges. </p>
+
+					<br>
+					<div class="image-block">
+						<img src="./Emotion Detection via Speech Analysis_files/medusa7.png" style="width: 30%; height: 10%;">
+					</div>
+					<p style="text-align: center;"><b>Fig. 7.</b> Before normalizing the data</p>
+					<br>
+					<div class="image-block">
+						<img src="./Emotion Detection via Speech Analysis_files/medusa8.png" style="width: 30%; height: 10%;">
+					</div>
+					<p style="text-align: center;"><b>Fig. 8.</b> After normalizing the data between 0 and 1</p>
+					<br>
+
+					<p><b>SVM Classifier</b>: Finally the normalized matrix is passed to a SVM classifier. In this study we used <a onclick="window.open(&#39;https://www.csie.ntu.edu.tw/~cjlin/libsvm/&#39;)" class="textLinks" style="color:#00f;cursor: pointer;">LIBSVM</a> for training and testing. LIBSVM is an integrated software for support vector classification, (C-SVC, nu-SVC), regression (epsilon-SVR, nu-SVR) and distribution estimation (one-class SVM). It supports multi-class classification.</p>
+					<p>	<b>A. Training</b>: The training ‘NCC’ matrix is passed to the classifier along with learning tags. The classifier returns a ‘model’ that contains the learnt data.</p>
+					<p> <b>B. Testing</b>: The testing ‘NCC’ matrix is passed to the classifier along with test tags and the model generated after learning. The classifier classifies the samples using the model and then tests its results against the test tags provided. Classification accuracy at the end of the operation determines effectiveness of the hyperplane.</p>
+
+					<p><b>Test and Results</b>: We tested the accuracy of the classifier with and without using normalization and dimensionality reduction of our extracted feature vectors. The results are outlined in the following table.</p>
+					<table style="border: 1px solid black; text-align: left;margin: 0px auto">
+						<tbody><tr><td style="border: 1px solid black">Only MFCC feature vector</td><td style="border: 1px solid black">65.6863%</td></tr>
+						<tr><td style="border: 1px solid black">MFCC feature vector with column normalization</td><td style="border: 1px solid black">61.7647%</td></tr>
+						<tr><td style="border: 1px solid black">MFCC feature vector with row normalization</td><td style="border: 1px solid black">50.9804%</td></tr>
+						<tr><td style="border: 1px solid black">MFCC feature vector with reduced dimensions and column normalization</td><td style="border: 1px solid black">66.6667%</td></tr>
+						<tr><td style="border: 1px solid black">MFCC feature vector with reduced dimensions and row normalization</td><td style="border: 1px solid black">92.1569%</td></tr>
+					</tbody></table>
+
+				</div>
+
+				<div style="padding-top: 10px; text-align: center;">
+					<a onclick="window.open(&#39;https://www.facebook.com/vikrant.zorba&#39;)">
+						<div class="facebookBtn socialMediaBtnLook">
+						</div>
+					</a>
+					<a onclick="window.open(&#39;https://twitter.com/thezorbastian&#39;)">
+						<div class="twitterBtn socialMediaBtnLook">	
+						</div>
+					</a>
+					<a onclick="window.open(&#39;https://www.instagram.com/badrobot94&#39;)">
+						<div class="instaBtn socialMediaBtnLook">	
+						</div>
+					</a>
+					<a onclick="window.open(&#39;https://in.linkedin.com/in/vikrant-fernandes-69a20ab4&#39;)">
+						<div class="linkedinBtn socialMediaBtnLook">	
+						</div>
+					</a>
+					<a onclick="window.open(&#39;https://www.youtube.com/channel/UClTBpM8vqZGdxQOuXagsLXg&#39;)">
+						<div class="youtubeBtn socialMediaBtnLook">	
+						</div>
+					</a>
+					<a onclick="window.open(&#39;https://github.com/badrobot15&#39;)">
+						<div class="githubBtn socialMediaBtnLook">	
+						</div>
+					</a>
+					<h4 style="font-family: Droid Sans,sans-serif; font-weight: normal; padding-top: 10px;">Or you can contact me at <b>pingme@vikrantfernandes.com</b><br> on any inquiries or questions regarding my work :)<br><b>Copyright � 2016 Vikrant Fernandes</b><!--<b style="color: #EE2C2C;">You can download my CV here</b>--></h4>
+				</div>
+				
+			</div>
+		</div>
+		
+	<iframe frameborder="0" scrolling="no" style="background-color: transparent; border: 0px; display: none;" __idm_frm__="156" src="./Emotion Detection via Speech Analysis_files/saved_resource.html"></iframe><div id="GOOGLE_INPUT_CHEXT_FLAG" style="display: none;" input="" input_stat="{&quot;tlang&quot;:true,&quot;tsbc&quot;:true,&quot;pun&quot;:true,&quot;mk&quot;:true,&quot;ss&quot;:true}"></div><canvas id="xLabsCanvas" width="1536" height="674" style="background: 0px center; display: none; width: 1536px; height: 674px;"></canvas><div style="background-color: rgb(255, 143, 0); display: none; color: white; text-align: center; position: fixed; top: 0px; left: 0px; width: 100%; height: auto; min-width: 100%; min-height: auto; max-width: 100%; font: 12px &quot;Helvetica Neue&quot;, Helvetica, Arial, Geneva, sans-serif; cursor: pointer; padding: 5px;"><span style="color: white; font: 12px &quot;Helvetica Neue&quot;, Helvetica, Arial, Geneva, sans-serif;">You have turned off the paragraph player. You can turn it on again from the options page.</span><img src="chrome-extension://gfjopfpjmkcfgjpogepmdjmcnihfpokn/img/icons/icon-close_16.png" style="width: 20px; height: auto; min-width: 20px; min-height: auto; max-width: 20px; float: right; margin-right: 10px;"></div></body></html>
